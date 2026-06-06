@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: watchlist-service
+    runtime: java
+    buildCommand: "./mvnw clean package"
+    startCommand: "java -jar target/*.jar"

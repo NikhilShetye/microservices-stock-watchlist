@@ -1,0 +1,42 @@
+# Maven
+target/
+
+# IntelliJ
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Application secrets
+application-local.yml
+application-dev.yml
+application-prod.yml
+
+# Sensitive config
+**/application-local.yml
+**/application-dev.yml
+**/application-prod.yml
+
+# Keystores
+*.jks
+*.p12
+
+# Generated files
+out/
