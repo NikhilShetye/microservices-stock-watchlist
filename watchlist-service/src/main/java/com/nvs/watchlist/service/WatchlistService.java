@@ -33,25 +33,30 @@ public class WatchlistService {
     @CacheEvict(value = "watchlists", key = "#userId")
     public Watchlist addStock(Long userId, WatchlistRequest request) {
 
-        // Long userId = getUserId(httpRequest);
-
         long count = repo.countByUserId(userId);
 
         Watchlist watchlist = new Watchlist();
-
         watchlist.setStockSymbol(request.stockSymbol);
         watchlist.setUserId(userId);
         watchlist.setPosition((int) count);
 
+        // 1. SAVE FIRST (critical business operation)
+        Watchlist saved = repo.save(watchlist);
+
+        // 2. THEN publish event (non-critical)
         WatchlistEvent event = WatchlistEvent.builder()
                 .userId(userId)
                 .symbol(request.stockSymbol)
                 .action("ADDED")
                 .build();
 
-        kafkaProducerService.publishEvent(event);
+        try {
+            kafkaProducerService.publishEvent(event);
+        } catch (Exception e) {
+            log.error("Kafka failed but DB already saved", e);
+        }
 
-        return repo.save(watchlist);
+        return saved;
     }
 
     @Cacheable(value = "watchlists", key = "#userId")
