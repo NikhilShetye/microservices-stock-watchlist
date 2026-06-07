@@ -14,14 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Component
-public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
+public class GatewayFilter implements GlobalFilter, Ordered {
         private final JwtUtil jwtUtil;
 
-        public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+        public GatewayFilter(JwtUtil jwtUtil) {
                 this.jwtUtil = jwtUtil;
         }
 
-        private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+        private static final Logger log = LoggerFactory.getLogger(GatewayFilter.class);
 
         @Override
         public Mono<Void> filter(ServerWebExchange exchange,
