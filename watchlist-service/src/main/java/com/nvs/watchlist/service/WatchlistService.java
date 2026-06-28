@@ -31,7 +31,7 @@ public class WatchlistService {
     private static final Logger log = LoggerFactory.getLogger(WatchlistService.class);
 
     @CacheEvict(value = "watchlists", key = "#userId")
-    public Watchlist addStock(Long userId, WatchlistRequest request) {
+    public Watchlist addStock(String userId, WatchlistRequest request) {
 
         long count = repo.countByUserId(userId);
 
@@ -60,7 +60,7 @@ public class WatchlistService {
     }
 
     @Cacheable(value = "watchlists", key = "#userId")
-    public Page<WatchlistResponse> getUserWatchlist(Long userId,
+    public Page<WatchlistResponse> getUserWatchlist(String userId,
             @ParameterObject Pageable pageable) {
         log.info("Fetching watchlist from DB");
 
@@ -68,12 +68,21 @@ public class WatchlistService {
         return repo.findByUserId(userId, pageable).map(this::toResponse);
     }
 
-    public void deleteStock(Long id) {
-        repo.deleteById(id);
+    @Transactional
+    @CacheEvict(value = "watchlists", key = "#userId")
+    public void deleteStock(Long id, String userId) {
+        Watchlist watchlist = repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Stock not found"));
+
+        if (!watchlist.getUserId().equals(userId)) {
+            throw new RuntimeException("Unauthorized");
+        }
+        repo.delete(watchlist);
     }
 
     @Transactional
-    public void reorderWatchlist(Long userId, ReorderRequest request) {
+    @CacheEvict(value = "watchlists", key = "#userId")
+    public void reorderWatchlist(String userId, ReorderRequest request) {
         // Long userId = getUserId(httpRequest);
 
         List<Watchlist> list = repo.findByUserIdOrderByPosition(userId);

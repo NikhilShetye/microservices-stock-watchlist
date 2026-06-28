@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WatchlistEvent {
 
-    private Long userId;
+    private String userId;
     private String symbol;
     private String action;
 

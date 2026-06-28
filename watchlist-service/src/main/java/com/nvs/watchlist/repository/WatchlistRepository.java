@@ -10,10 +10,10 @@ import com.nvs.watchlist.entity.Watchlist;
 
 public interface WatchlistRepository extends JpaRepository<Watchlist, Long> {
 
-    List<Watchlist> findByUserIdOrderByPosition(Long userId);
+    List<Watchlist> findByUserIdOrderByPosition(String userId);
 
-    Page<Watchlist> findByUserId(Long userId, Pageable pageable);
+    Page<Watchlist> findByUserId(String userId, Pageable pageable);
 
-    long countByUserId(Long userId);
+    long countByUserId(String userId);
 
 }

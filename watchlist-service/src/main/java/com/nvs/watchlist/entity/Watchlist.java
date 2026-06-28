@@ -1,5 +1,6 @@
 package com.nvs.watchlist.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,9 +16,10 @@ public class Watchlist {
     private Long id;
 
     private String stockSymbol; // e.g. RELIANCE, TCS
-    private int position;       // for ordering
+    private int position; // for ordering
 
-    private Long userId;
+    @Column(nullable = false)
+    private String userId;
 
     // getters/setters
 }

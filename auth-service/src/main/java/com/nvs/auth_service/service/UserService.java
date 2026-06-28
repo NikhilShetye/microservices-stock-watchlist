@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.nvs.auth_service.dto.request.RegisterRequest;
-import com.nvs.auth_service.dto.request.UserRequest;
 import com.nvs.auth_service.dto.response.UserResponse;
 import com.nvs.auth_service.entity.User;
 import com.nvs.auth_service.repository.UserRepository;
